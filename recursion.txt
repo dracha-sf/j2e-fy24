@@ -1,0 +1,596 @@
+﻿Problem 1:
+Print all possible strings of length k that can be formed from a set of n characters.
+CODE:
+#include <iostream>
+#include <vector>
+using namespace std;
+
+
+void generateStrings(const vector<char>& characters, int k, string currentString) {
+    // Base case: if currentString reaches length k, print it
+    if (currentString.length() == k) {
+        cout << currentString << endl;
+        return;
+    }
+
+
+    // Recursive case: add each character from the set to currentString and recurse
+    for (char c : characters) {
+        string newString = currentString + c;
+        generateStrings(characters, k, newString);
+    }
+}
+
+
+int main() {
+    int k;
+    cout << "Enter the length of the strings (k): ";
+    cin >> k;
+
+
+    int n;
+    cout << "Enter the number of characters (n): ";
+    cin >> n;
+
+
+    vector<char> characters(n);
+    cout << "Enter the characters: ";
+    for (int i = 0; i < n; i++) {
+        cin >> characters[i];
+    }
+
+
+    cout << "Possible strings of length " << k << ":" << endl;
+    generateStrings(characters, k, "");
+
+
+    return 0;
+}
+
+
+
+
+
+
+Problem 2:
+Find the number of unique paths in a n X m grid, starting from [0,0] to [n-1,m-1], where movement is only allowed
+either 1 cell down or 1 cell right at a time.
+CODE:
+#include <iostream>
+#include <vector>
+
+
+int uniquePaths(int n, int m) {
+    // Create a 2D grid with size (n x m)
+    std::vector<std::vector<int>> dp(n, std::vector<int>(m, 0));
+
+
+    // Fill the first row with 1's (only one way to reach each cell)
+    for (int i = 0; i < m; i++) {
+        dp[0][i] = 1;
+    }
+
+
+    // Fill the first column with 1's (only one way to reach each cell)
+    for (int i = 0; i < n; i++) {
+        dp[i][0] = 1;
+    }
+
+
+    // Calculate the number of unique paths for each cell
+    for (int i = 1; i < n; i++) {
+        for (int j = 1; j < m; j++) {
+            // The number of unique paths to reach a cell is the sum of the paths
+            // from the cell above and the cell to the left
+            dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+        }
+    }
+
+
+    // The bottom-right cell will contain the total number of unique paths
+    return dp[n - 1][m - 1];
+}
+
+
+int main() {
+    int n, m;
+    std::cout << "Enter the number of rows (n): ";
+    std::cin >> n;
+    std::cout << "Enter the number of columns (m): ";
+    std::cin >> m;
+
+
+    int paths = uniquePaths(n, m);
+    std::cout << "Number of unique paths: " << paths << std::endl;
+
+
+    return 0;
+}
+
+
+Problem 3:
+The head of a singly linked-list is given. The list can be represented as:
+L0 → L1 → … → Ln - 1 → Ln
+Reorder the list to be on the following form:
+L0 → Ln → L1 → Ln - 1 → L2 → Ln - 2 → …
+The values in the list's nodes may not be modified, only nodes themselves may be changed.
+CODE:
+#include <iostream>
+
+
+using namespace std;
+
+
+// Definition for singly-linked list.
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(NULL) {}
+};
+
+
+// Function to insert a node at the beginning of the linked list
+void insertNode(ListNode*& head, int val) {
+    ListNode* newNode = new ListNode(val);
+    newNode->next = head;
+    head = newNode;
+}
+
+
+ListNode* reverseList(ListNode* head) {
+    ListNode* prev = NULL;
+    ListNode* curr = head;
+
+
+    while (curr != NULL) {
+        ListNode* nextNode = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = nextNode;
+    }
+
+
+    return prev;
+}
+
+
+void reorderList(ListNode* head) {
+    if (head == NULL || head->next == NULL) {
+        return;
+    }
+
+
+    // Step 1: Find the middle of the linked list
+    ListNode* slow = head;
+    ListNode* fast = head;
+
+
+    while (fast->next != NULL && fast->next->next != NULL) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+
+    // Step 2: Split the linked list into two halves
+    ListNode* secondHalf = slow->next;
+    slow->next = NULL;
+
+
+    // Step 3: Reverse the second half of the linked list
+    secondHalf = reverseList(secondHalf);
+
+
+    // Step 4: Merge the first and reversed second halves alternatively
+    ListNode* current = head;
+
+
+    while (secondHalf != NULL) {
+        ListNode* nextNode = current->next;
+        current->next = secondHalf;
+        secondHalf = secondHalf->next;
+        current->next->next = nextNode;
+        current = nextNode;
+    }
+}
+
+
+// Function to print the linked list
+void printList(ListNode* head) {
+    ListNode* current = head;
+
+
+    while (current != NULL) {
+        cout << current->val << " ";
+        current = current->next;
+    }
+
+
+    cout << endl;
+}
+
+
+int main() {
+        ListNode* head = nullptr;
+    int n;
+    cout << "Enter the number of elements: ";
+    cin >> n;
+    cout << "Enter the elements: ";
+    for (int i = 0; i < n; i++) {
+        int num;
+        cin >> num;
+        insertNode(head, num);
+    }
+
+
+    cout << "Original List: ";
+    printList(head);
+
+
+    reorderList(head);
+
+
+    cout << "Reordered List: ";
+    printList(head);
+
+
+    return 0;
+}
+
+
+
+
+
+
+Problem 4:
+Towers of Hanoi: In the classic problem of the Towers of Hanoi, you have 3 towers and N disks of different sizes which can
+slide onto any tower. The puzzle starts with disks sorted in ascending order of size from top to bottom (i.e., each disk sits on
+top of an even larger one).
+You have the following constraints:
+(1) Only one disk can be moved at a time.
+(2) A disk is slid off the top of one tower onto another tower.
+(3) A disk cannot be placed on top of a smaller disk.
+Write a program to move the disks from the first tower to the last and print the moves.
+CODE:
+#include <iostream>
+
+
+void moveDisk(int disk, char source, char destination) {
+    std::cout << "Move disk " << disk << " from " << source << " to " << destination << std::endl;
+}
+
+
+void towersOfHanoi(int disks, char source, char auxiliary, char destination) {
+    if (disks == 1) {
+        moveDisk(disks, source, destination);
+    } else {
+        towersOfHanoi(disks - 1, source, destination, auxiliary);
+        moveDisk(disks, source, destination);
+        towersOfHanoi(disks - 1, auxiliary, source, destination);
+    }
+}
+
+
+int main() {
+    int numDisks;
+    std::cout << "Enter the number of disks: ";
+    std::cin >> numDisks;
+
+
+    towersOfHanoi(numDisks, 'A', 'B', 'C');
+
+
+    return 0;
+}
+
+
+
+
+Problem 5:
+Given an integer n, return a list of all possible full binary trees with n nodes. Each node of each tree in the answer must have
+Node.val == 0.
+Each element of the answer is the root node of one possible tree. You may return the final list of trees in any order.
+A full binary tree is a binary tree where each node has exactly 0 or 2 children.
+CODE:
+#include <iostream>
+#include <vector>
+
+
+// Definition for a binary tree node.
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+
+
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+
+std::vector<TreeNode*> generateTrees(int n) {
+    if (n == 0) {
+        return {nullptr};
+    }
+
+
+    std::vector<TreeNode*> result;
+    for (int i = 1; i <= n; i += 2) {
+        int leftCount = i - 1;
+        int rightCount = n - i;
+
+
+        std::vector<TreeNode*> leftTrees = generateTrees(leftCount);
+        std::vector<TreeNode*> rightTrees = generateTrees(rightCount);
+
+
+        for (TreeNode* left : leftTrees) {
+            for (TreeNode* right : rightTrees) {
+                TreeNode* root = new TreeNode(0);
+                root->left = left;
+                root->right = right;
+                result.push_back(root);
+            }
+        }
+    }
+
+
+    return result;
+}
+
+
+// Function to print the tree in preorder traversal
+void printTree(TreeNode* root) {
+    if (root == nullptr) {
+        return;
+    }
+    std::cout << root->val << " ";
+    printTree(root->left);
+    printTree(root->right);
+}
+
+
+// Function to deallocate memory of the tree
+void deleteTree(TreeNode* root) {
+    if (root == nullptr) {
+        return;
+    }
+    deleteTree(root->left);
+    deleteTree(root->right);
+    delete root;
+}
+
+
+int main() {
+    int n = 3;
+    std::vector<TreeNode*> trees = generateTrees(n);
+
+
+    for (TreeNode* root : trees) {
+        printTree(root);
+        std::cout << std::endl;
+        deleteTree(root);
+    }
+
+
+    return 0;
+}
+
+
+
+
+
+
+Problem 6:
+Print sums of all subsets of a given set of size n.
+CODE:
+#include <iostream>
+#include <vector>
+
+
+using namespace std;
+
+
+void generateSubsets(vector<int>& set, int n, int index, int sum, vector<int>& subsetSums) {
+    if (index == n) {
+        subsetSums.push_back(sum);
+        return;
+    }
+
+
+    // Include the current element in the subset
+    generateSubsets(set, n, index + 1, sum + set[index], subsetSums);
+
+
+    // Exclude the current element from the subset
+    generateSubsets(set, n, index + 1, sum, subsetSums);
+}
+
+
+void printSubsetSums(vector<int>& set) {
+    int n = set.size();
+    vector<int> subsetSums;
+    generateSubsets(set, n, 0, 0, subsetSums);
+
+
+    cout << "Subset sums:\n";
+    for (int sum : subsetSums) {
+        cout << sum << " ";
+    }
+    cout << endl;
+}
+
+
+int main() {
+    int n;
+    cout << "Enter the size of the set: ";
+    cin >> n;
+
+
+    vector<int> set(n);
+    cout << "Enter the elements of the set:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> set[i];
+    }
+
+
+    printSubsetSums(set);
+
+
+    return 0;
+}
+
+
+
+
+
+
+Problem 7:
+0/1 Knapsack Problem: We are given N items where each item has some weight and profit associated with it. We are also
+given a bag with capacity W, [i.e., the bag can hold at most W weight in it]. The target is to put the items into the bag such that
+the sum of profits associated with them is the maximum possible.
+The constraint here is we can either put an item completely into the bag or cannot put it at all [It is not possible to put a part of
+an item into the bag].
+CODE:
+#include <iostream>
+#include <vector>
+
+
+using namespace std;
+
+
+// Structure to represent an item
+struct Item {
+    int weight;
+    int profit;
+};
+
+
+// Function to solve the 0/1 Knapsack problem
+int knapsack(int W, const vector<Item>& items) {
+    int n = items.size();
+
+
+    // Create a table to store the maximum profit for each subproblem
+    vector<vector<int>> dp(n + 1, vector<int>(W + 1, 0));
+
+
+    for (int i = 1; i <= n; i++) {
+        int weight = items[i - 1].weight;
+        int profit = items[i - 1].profit;
+
+
+        for (int j = 1; j <= W; j++) {
+            if (weight > j) {
+                // If the current item's weight exceeds the capacity of the knapsack,
+                // we cannot include it in the optimal solution
+                dp[i][j] = dp[i - 1][j];
+            } else {
+                // Find the maximum value by considering both the cases:
+                // 1. Including the current item
+                // 2. Excluding the current item
+                dp[i][j] = max(dp[i - 1][j], profit + dp[i - 1][j - weight]);
+            }
+        }
+    }
+
+
+    // Return the maximum profit
+    return dp[n][W];
+}
+
+
+int main() {
+    int W; // Capacity of the knapsack
+    int n; // Number of items
+
+
+    cout << "Enter the capacity of the knapsack: ";
+    cin >> W;
+
+
+    cout << "Enter the number of items: ";
+    cin >> n;
+
+
+    vector<Item> items(n);
+
+
+    cout << "Enter the weight and profit of each item:" << endl;
+    for (int i = 0; i < n; i++) {
+        cout << "Item " << i + 1 << ": ";
+        cin >> items[i].weight >> items[i].profit;
+    }
+
+
+    int maxProfit = knapsack(W, items);
+    cout << "Maximum profit: " << maxProfit << endl;
+
+
+    return 0;
+}
+
+
+
+
+
+
+Problem 8:
+Given a string s, partition s such that every string of the partition is a palindrome. Return all possible palindrome partitioning of s.
+CODE:
+#include <iostream>
+#include <vector>
+using namespace std;
+
+
+bool isPalindrome(string str, int start, int end) {
+    while (start < end) {
+        if (str[start] != str[end])
+            return false;
+        start++;
+        end--;
+    }
+    return true;
+}
+
+
+void partitionPalindrome(string s, int start, vector<string>& currentPartition, vector<vector<string>>& allPartitions) {
+    if (start == s.length()) {
+        allPartitions.push_back(currentPartition);
+        return;
+    }
+
+
+    for (int i = start; i < s.length(); i++) {
+        if (isPalindrome(s, start, i)) {
+            string palindrome = s.substr(start, i - start + 1);
+            currentPartition.push_back(palindrome);
+            partitionPalindrome(s, i + 1, currentPartition, allPartitions);
+            currentPartition.pop_back();
+        }
+    }
+}
+
+
+vector<vector<string>> palindromePartition(string s) {
+    vector<vector<string>> allPartitions;
+    vector<string> currentPartition;
+    partitionPalindrome(s, 0, currentPartition, allPartitions);
+    return allPartitions;
+}
+
+
+int main() {
+    string s = "aab";
+    vector<vector<string>> partitions = palindromePartition(s);
+
+
+    // Print all palindrome partitions
+    for (const auto& partition : partitions) {
+        for (const auto& palindrome : partition) {
+            cout << palindrome << " ";
+        }
+        cout << endl;
+    }
+
+
+    return 0;
+}

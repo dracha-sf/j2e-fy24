@@ -1,0 +1,778 @@
+Question 1
+
+public class linkedlist {
+        int data;
+        Node next;
+
+        Node(int value)
+        {
+            this.data = value;
+            this.next = null;
+        }
+        }
+
+        class Main {
+        static int length(Node head)
+        {
+            Node temp = head;
+            int count = 0;
+            while (temp != null) {
+            count++;
+            temp = temp.next;
+            }
+            return count;
+        }
+
+        static void printList(Node head)
+        {
+            Node ptr = head;
+            while (ptr != null) {
+            System.out.print(ptr.data + " ");
+            ptr = ptr.next;
+            }
+            System.out.println();
+        }
+
+        static Node deleteNthNodeFromEnd(Node head, int n)
+        {
+            int Length = length(head);
+            int nodeFromBeginning = Length - n + 1;
+            Node prev = null;
+            Node temp = head;
+            for (int i = 1; i < nodeFromBeginning; i++) {
+            prev = temp;
+            temp = temp.next;
+            }
+            if (prev == null) {
+            head = head.next;
+            return head;
+            }
+            else {
+            prev.next = prev.next.next;
+            return head;
+            }
+        }
+
+        public static void main(String[] args)
+        {
+            Node head = new Node(1);
+            head.next = new Node(2);
+            head.next.next = new Node(3);
+            head.next.next.next = new Node(4);
+            head.next.next.next.next = new Node(5);
+            System.out.println("Linked List before Deletion:");
+            printList(head);
+
+            head = deleteNthNodeFromEnd(head, 4);
+
+            System.out.println("Linked List after Deletion:");
+            printList(head);
+        }
+        }
+
+
+
+
+
+Question 2:
+
+
+ import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+
+public class linkedlist{
+	int key;
+	Node next;
+
+	public Node(int key) {
+		this.key = key;
+		next = null;
+	}
+}
+
+public class Main {
+
+	public static Node newNode(int key) {
+		return new Node(key);
+	}
+
+
+	public static void main(String[] args) {
+
+		Node a = new Node(5);
+		a.next = new Node(10);
+		a.next.next = new Node(15);
+		a.next.next.next = new Node(40);
+
+		Node b = new Node(2);
+		b.next = new Node(3);
+		b.next.next = new Node(20);
+
+		List<Integer> v = new ArrayList<>();
+		while (a != null) {
+			v.add(a.key);
+			a = a.next;
+		}
+
+		while (b != null) {
+			v.add(b.key);
+			b = b.next;
+		}
+
+		Collections.sort(v);
+		Node result = new Node(-1);
+		Node temp = result;
+		for (int i = 0; i < v.size(); i++) {
+			result.next = new Node(v.get(i));
+			result = result.next;
+		}
+
+		temp = temp.next;
+		System.out.print("Resultant Merge Linked List is : ");
+		while (temp != null) {
+			System.out.print(temp.key + " ");
+			temp = temp.next;
+		}
+	}
+
+
+}
+ 
+
+
+
+Question:3
+
+
+
+import java.io.*;
+public class linkedlist{
+	Node head; 
+
+
+	class Node {
+		int data;
+		Node next;
+		Node(int d)
+		{
+			data = d;
+			next = null;
+		}
+	}
+
+	void pairWiseSwap()
+	{
+		Node temp = head;
+
+
+		while (temp != null && temp.next != null) {
+
+
+			int k = temp.data;
+			temp.data = temp.next.data;
+			temp.next.data = k;
+			temp = temp.next.next;
+		}
+	}
+
+
+
+	public void push(int new_data)
+	{
+
+
+		Node new_node = new Node(new_data);
+
+
+		new_node.next = head;
+
+
+		head = new_node;
+	}
+
+
+	void printList()
+	{
+		Node temp = head;
+		while (temp != null) {
+			System.out.print(temp.data + " ");
+			temp = temp.next;
+		}
+		System.out.println();
+	}
+
+
+	public static void main(String args[])
+	{
+		LinkedList llist = new LinkedList();
+
+		llist.push(5);
+		llist.push(4);
+		llist.push(3);
+		llist.push(2);
+		llist.push(1);
+
+		System.out.println("Linked List before calling pairWiseSwap() ");
+		llist.printList();
+
+		llist.pairWiseSwap();
+
+		System.out.println("Linked List after calling pairWiseSwap() ");
+		llist.printList();
+	}
+
+
+
+}
+
+
+
+Question 4:
+
+
+
+import java.io.*;
+
+public class linkedlist {
+
+	Node head; 
+
+
+	class Node {
+		int data;
+		Node next;
+		Node(int d)
+		{
+			data = d;
+			next = null;
+		}
+	}
+
+	void removeDuplicates()
+	{
+
+		Node curr = head;
+
+
+		while (curr != null) {
+			Node temp = curr;
+
+			while (temp != null && temp.data == curr.data) {
+				temp = temp.next;
+			}
+
+			curr.next = temp;
+			curr = curr.next;
+		}
+	}
+
+public void push(int new_data)
+	{
+
+		Node new_node = new Node(new_data);
+
+
+		new_node.next = head;
+
+
+		head = new_node;
+	}
+
+
+	void printList()
+	{
+		Node temp = head;
+		while (temp != null) {
+			System.out.print(temp.data + " ");
+			temp = temp.next;
+		}
+		System.out.println();
+	}
+
+
+	public static void main(String args[])
+	{
+		LinkedList llist = new LinkedList();
+		llist.push(20);
+		llist.push(13);
+		llist.push(13);
+		llist.push(11);
+		llist.push(11);
+		llist.push(11);
+
+		System.out.println(
+			"List before removal of duplicates");
+		llist.printList();
+
+		llist.removeDuplicates();
+
+		System.out.println(
+			"List after removal of elements");
+		llist.printList();
+	}
+
+
+
+}
+
+
+
+
+Question 5:
+
+public class linkedlist {
+
+
+    Node head = null;
+    class Node
+    {
+
+
+        int val;
+        Node next;
+        Node(int v)
+        {
+
+
+            val = v;
+            next = null;
+        }
+    }
+
+
+    public void insert(int data)
+    {
+        Node new_node = new Node(data);
+        new_node.next = head;
+        head = new_node;
+    }
+
+
+    public void removeAllDuplicates()
+    {
+
+
+        Node dummy = new Node(0);
+
+
+dummy.next = head;
+        Node prev = dummy;
+        Node current = head;
+
+        while (current != null)
+        {
+
+            while (current.next != null &&
+                prev.next.val == current.next.val)
+                current = current.next;
+
+
+            if (prev.next == current)
+                prev = prev.next;
+else
+                prev.next = current.next;
+
+            current = current.next;
+        }
+
+        head = dummy.next;
+    }
+
+
+    public void printList()
+    {
+        Node trav = head;
+        if (head == null)
+            System.out.print(" List is empty" );
+
+        while (trav != null)
+        {
+            System.out.print(trav.val + " ");
+            trav = trav.next;
+        }
+    }
+
+
+    public static void main(String[] args)
+    {
+        LinkedList ll = new LinkedList();
+        ll.insert(53);
+        ll.insert(53);
+        ll.insert(49);
+        ll.insert(49);
+        ll.insert(35);
+        ll.insert(28);
+        ll.insert(28);
+        ll.insert(23);
+
+        System.out.println("Before removal of duplicates");
+        ll.printList();
+
+        ll.removeAllDuplicates();
+
+        System.out.println("\nAfter removal of duplicates");
+        ll.printList();
+
+    }
+
+
+}
+ 
+Question 6:
+public class linkedlist {
+        int key;
+        int value;
+
+
+        int timeStamp;
+
+        public Node(int key, int value)
+        {
+            this.key = key;
+            this.value = value;
+
+
+            this.timeStamp = currentTimeStamp;
+        }
+    }
+
+
+
+Question:7
+
+
+import java.util.*;
+public class linkedlist {
+
+
+	static class Node {
+		int data;
+		Node prev, next;
+
+
+		static Node getnode(int data)
+		{
+			Node newNode = new Node();
+			newNode.data = data;
+			newNode.prev = newNode.next = null;
+			return newNode;
+		}
+	};
+
+
+	static class Deque {
+		Node front;
+		Node rear;
+		int Size;
+
+		Deque()
+		{
+			front = rear = null;
+			Size = 0;
+		}
+boolean isEmpty() { return (front == null); }
+
+
+		int size() { return Size; }
+
+
+		void insertFront(int data)
+		{
+			Node newNode = Node.getnode(data);
+
+			if (newNode == null)
+				System.out.print("OverFlow\n");
+			else {
+
+				if (front == null)
+					rear = front = newNode;
+
+else {
+					newNode.next = front;
+					front.prev = newNode;
+					front = newNode;
+				}
+
+
+				Size++;
+			}
+		}
+
+
+		void insertRear(int data)
+		{
+			Node newNode = Node.getnode(data);
+
+			if (newNode == null)
+				System.out.print("OverFlow\n");
+			else {
+
+				if (rear == null)
+					front = rear = newNode;
+
+
+				else {
+					newNode.prev = rear;
+					rear.next = newNode;
+					rear = newNode;
+				}
+
+				Size++;
+			}
+		}
+
+
+		void deleteFront()
+		{
+
+			if (isEmpty())
+				System.out.print("UnderFlow\n");
+else {
+				Node temp = front;
+				front = front.next;
+
+
+				if (front == null)
+					rear = null;
+				else
+					front.prev = null;
+
+
+				Size--;
+			}
+		}
+void deleteRear()
+		{
+
+			if (isEmpty())
+				System.out.print("UnderFlow\n");
+
+
+			else {
+				Node temp = rear;
+				rear = rear.prev;
+
+
+				if (rear == null)
+					front = null;
+				else
+					rear.next = null;
+
+
+				Size--;
+			}
+		}
+
+
+		int getFront()
+		{
+
+			if (isEmpty())
+				return -1;
+			return front.data;
+		}
+					rear.next = null;
+
+
+				Size--;
+			}
+		}
+
+
+		int getFront()
+		{
+
+			if (isEmpty())
+				return -1;
+			return front.data;
+		}
+
+
+		int getRear()
+		{
+
+
+			if (isEmpty())
+				return -1;
+			return rear.data;
+		}
+
+
+		void erase()
+		{
+			rear = null;
+			while (front != null) {
+				Node temp = front;
+				front = front.next;
+			}
+			Size = 0;
+		}
+	}
+
+
+	public static void main(String[] args)
+	{
+		Deque dq = new Deque();
+		System.out.print(
+			"Insert element '5' at rear end\n");
+		dq.insertRear(5);
+
+		System.out.print(
+			"Insert element '10' at rear end\n");
+		dq.insertRear(10);
+		System.out.print("Rear end element: " + dq.getRear()
+						+ "\n");
+		dq.deleteRear();
+		System.out.print(
+			"After deleting rear element new rear"
+			+ " is: " + dq.getRear() + "\n");
+		System.out.print(
+			"Inserting element '15' at front end \n");
+		dq.insertFront(15);
+		System.out.print(
+			"Front end element: " + dq.getFront() + "\n");
+
+		System.out.print("Number of elements in Deque: "
+						+ dq.size() + "\n");
+		dq.deleteFront();
+		System.out.print("After deleting front element new "
+						+ "front is: " + dq.getFront()
+		n");
+	}
+
+
+}
+
+
+Question:8
+
+
+import java.util.*;
+
+public class linkedlist {
+
+static class Node {
+	int data;
+	Node next;
+};
+
+
+static Node append(Node head_ref, int new_data)
+{
+
+	Node new_node = new Node();
+           Node last = head_ref; 
+
+
+	new_node.data = new_data;
+
+
+	new_node.next = null;
+
+
+	if (head_ref == null) {
+		head_ref = new_node;
+		return head_ref;
+	}
+while (last.next != null) {
+		last = last.next;
+	}
+
+
+	last.next = new_node;
+	return head_ref;
+}
+
+
+static Node mergeInBetween(Node list1, Node list2,
+					int a, int b)
+{
+
+	int cnt = 0;
+
+
+	Node list = list1;
+
+while (cnt + 1 != a) {
+
+		list = list.next;
+
+		cnt++;
+	}
+
+
+	Node demo = list.next;
+
+	list.next = list2;
+
+	Node samp = list2;
+
+	while (samp.next != null)
+		samp = samp.next;
+
+	while (cnt + 1 != b) {
+		demo = demo.next;
+		cnt++;
+	}
+
+	demo = demo.next;
+	samp.next = demo;
+	return list1;
+}
+
+
+static void printList(Node node)
+{
+	while (node != null) {
+		System.out.print(" " + node.data);
+		node = node.next;
+	}
+}
+
+
+	demo = demo.next;
+	samp.next = demo;
+	return list1;
+}
+
+
+static void printList(Node node)
+{
+	while (node != null) {
+		System.out.print(" " + node.data);
+		node = node.next;
+	}
+}
+
+
+public static void main(String[] args)
+{
+	Node list1 = null, list2 = null;
+	list1= append(list1, 10);
+	list1 = append(list1, 11);
+	list1= append(list1, 12);
+	list1 = append(list1, 13);
+	list1 =append(list1, 14);
+	list1 = append(list1, 15);
+	list2 = append(list2, 100);
+	list2 = append(list2, 101);
+	list2 = append(list2, 102);
+	list2 =append(list2, 103);
+	int a = 3, b = 4;
+	list1 = mergeInBetween(list1, list2, a, b);
+	printList(list1);
+}
+}
+
+
+
+
+
+
+
+
+
+
+
